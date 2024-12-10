@@ -8,7 +8,7 @@ def home():
     return jsonify({
         "message": "Welcome to the simple Flask API!",
         "description": "This is the home endpoint of our application."
-    }), 200
+    }), 400
 
 @app.route('/health')
 def health_check():
