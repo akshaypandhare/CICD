@@ -36,12 +36,13 @@ jobs:
           echo "IMAGE_NAME=apandharedev/test" >> $GITHUB_ENV
           echo "IMAGE_TAG=$(echo ${GITHUB_SHA} | cut -c1-6)" >> $GITHUB_ENV
           cd src && docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker image ls
 
       # Scan Docker image with Trivy
       - name: Scan with Trivy
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: apandharedev/test:$IMAGE_TAG
+          image-ref: $IMAGE_NAME:$IMAGE_TAG
 
       # Tag and Push to ECR
       - name: Push Docker Image to ECR
