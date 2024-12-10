@@ -30,11 +30,15 @@ jobs:
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
           | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-      # Build Docker image
-      - name: Build Docker Image
+      # Set image name and image tag
+      - name: Docker image name and Tag
         run: |
           echo "IMAGE_NAME=apandharedev/test" >> $GITHUB_ENV
           echo "IMAGE_TAG=$(echo ${GITHUB_SHA} | cut -c1-6)" >> $GITHUB_ENV
+
+      # Build Docker image
+      - name: Build Docker Image
+        run: |
           cd src && docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
           docker image ls
 
