@@ -1,0 +1,57 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment directories
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Python package manager cache
+pip-log.txt
+pip-delete-this-directory.txt
+
+# PyInstaller
+# Usually these files are written to this folder when creating a standalone binary of a script
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache/
+.nox/
+.pytest_cache/
+.tox/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# macOS system files
+.DS_Store
+
+# Logs and temporary files
+*.log
+*.temp
+*.tmp
+
+# IDE / editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Environment variables and secrets
+.env
+.env.*
+
