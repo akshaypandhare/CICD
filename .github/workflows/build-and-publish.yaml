@@ -35,20 +35,20 @@ jobs:
         run: |
           echo "IMAGE_NAME=apandharedev/test" >> $GITHUB_ENV
           echo "IMAGE_TAG=$(echo ${GITHUB_SHA} | cut -c1-6)" >> $GITHUB_ENV
-          cd src && docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          cd src && docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
           docker image ls
 
       # Scan Docker image with Trivy
       - name: Scan with Trivy
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: $IMAGE_NAME:$IMAGE_TAG
+          image-ref: ${IMAGE_NAME}:${IMAGE_TAG}
 
       # Tag and Push to ECR
       - name: Push Docker Image to ECR
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          REPOSITORY_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$IMAGE_NAME"
-          docker tag $IMAGE_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
-          docker push $REPOSITORY_URI:$IMAGE_TAG
+          REPOSITORY_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${IMAGE_NAME}"
+          docker tag ${IMAGE_NAME}:${IMAGE_TAG} $REPOSITORY_URI:${IMAGE_TAG}
+          docker push $REPOSITORY_URI:${IMAGE_TAG}
