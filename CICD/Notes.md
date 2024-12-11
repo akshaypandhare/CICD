@@ -40,7 +40,7 @@ test_add_numbers()
 print("All unit tests passed!")
 ```
 
-### Functional testing
+### Functional testing might also known as integration testing,
 
 Functional testing is like testing the entire machine to make sure it does what it's supposed to do from the user's perspective. It checks if the entire system or application works correctly as a whole.
 
