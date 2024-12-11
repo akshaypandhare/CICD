@@ -43,7 +43,7 @@ jobs:
       - name: Pull the image from the Dev env and tag it for stage env and push to the stage repo.
         run: |
           DEV_REPOSITORY_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.DEV_IMAGE_NAME }}"
+          STAGE_REPOSITORY_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.STAGE_IMAGE_NAME }}"
           docker pull $DEV_REPOSITORY_URI:${{  env.DEV_IMAGE_TAG }}
-          docker tag $DEV_REPOSITORY_URI:${{  env.DEV_IMAGE_TAG }} ${{  env.STAGE_IMAGE_NAME }}:${{ env.DEV_IMAGE_TAG  }}
-          docker push ${{  env.STAGE_IMAGE_NAME }}:${{ env.DEV_IMAGE_TAG  }}
-        
+          docker tag $DEV_REPOSITORY_URI:${{  env.DEV_IMAGE_TAG }} $STAGE_REPOSITORY_URI:${{ env.DEV_IMAGE_TAG  }}
+          docker push $STAGE_REPOSITORY_URI:${{ env.DEV_IMAGE_TAG  }}
