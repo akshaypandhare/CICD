@@ -1,0 +1,49 @@
+name: Deploy Pipeline
+
+on:
+  push:
+    branches:
+      - stage
+
+jobs:
+  docker-build-and-push:
+    name: Build, Scan, and Push Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Configure AWS Credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: "us-east-1"
+
+      # Log in to Amazon ECR
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+          | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      - name: Get the latest image tag from the S3 bucket.
+        env:
+          bucket_name: test-cicd-bucket-apandhare
+        run: |
+          image_tag=$(aws s3 cp s3://$bucket_name/latest-develop-sha.txt -)
+          echo "DEV_IMAGE_TAG=$image_tag" >> $GITHUB_ENV
+          echo "DEV_IMAGE_NAME=apandharedev/test" >> $GITHUB_ENV
+          echo "STAGE_IMAGE_NAME=apandharestage/test" >> $GITHUB_ENV
+          echo "STAGE_IMAGE_TAG=$DEV_IMAGE_TAG" >> $GITHUB_ENV
+
+      - name: Pull the image from the Dev env and tag it for stage env and push to the stage repo.
+        run: |
+          DEV_REPOSITORY_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.DEV_IMAGE_NAME }}"
+          docker pull $DEV_REPOSITORY_URI:${{  env.DEV_IMAGE_TAG }}
+          docker tag $DEV_REPOSITORY_URI:${{  env.DEV_IMAGE_TAG }} ${{  env.STAGE_IMAGE_NAME }}:${{ env.DEV_IMAGE_TAG  }}
+          docker push ${{  env.STAGE_IMAGE_NAME }}:${{ env.DEV_IMAGE_TAG  }}
+        
