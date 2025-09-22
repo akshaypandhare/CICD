@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      # Checkout the code
       - name: commit time and date
         run: |
          COMMIT_TIMESTAMP=$(git show -s --format=%cd --date=format:'%Y-%m-%d-%H:%M:%S' ${{ github.sha }})
