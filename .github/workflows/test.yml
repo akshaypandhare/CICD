@@ -1,0 +1,18 @@
+name: Deploy Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker-build-and-push:
+    name: Build, Scan, and Push Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - name: commit time and date
+        run: |
+         COMMIT_TIMESTAMP=$(git show -s --format=%cd --date=format:'%Y-%m-%d-%H:%M:%S' ${{ github.sha }})
+         echo $COMMIT_TIMESTAMP
+        
