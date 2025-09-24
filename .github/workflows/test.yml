@@ -16,7 +16,7 @@ jobs:
       # Checkout the code
       - name: commit time and date
         run: |
-         COMMIT_TIMESTAMP=$(git show -s --format=%cd --date=format:'%Y-%m-%d-%H:%M:%S' ${{ github.sha }})
+         COMMIT_TIMESTAMP=$(date -u +"%Y-%m-%d-%H:%M:%S")
          echo $COMMIT_TIMESTAMP
         
 
