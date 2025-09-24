@@ -16,8 +16,10 @@ jobs:
       # Checkout the code
       - name: commit time and date
         run: |
-         COMMIT_TIMESTAMP=$(date -u +"%Y-%m-%d-%H:%M:%S")
-         echo $COMMIT_TIMESTAMP
+         echo "DATE_TAG_SUFFIX=$(date -u +"%Y-%m-%d-%H:%M:%S")" >> $GITHUB_ENV
+      - name: test
+        run: |
+          echo "${{ env.DATE_TAG_SUFFIX }}"
         
 
 
