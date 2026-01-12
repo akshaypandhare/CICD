@@ -26,4 +26,4 @@ jobs:
       - name: Test AWS access
         run: aws sts get-caller-identity
       - name: test run
-        run: aws s3 ls s3://prime-dev-content-imfsg/
+        run: aws s3 cp ./.gitignore s3://testing-gh-action-cicd-321123/testing
