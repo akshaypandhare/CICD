@@ -26,4 +26,4 @@ jobs:
       - name: Test AWS access
         run: aws sts get-caller-identity
       - name: test run
-        run: aws s3 ls
+        run: aws s3 ls s3://prime-dev-content-imfsg/
